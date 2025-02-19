@@ -1,0 +1,57 @@
+.blog-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px;
+}
+
+.blog-box {
+    width: 20%;
+    height: 290px;
+    margin-top: 100px;
+    margin-bottom: -80px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.blog-box img {
+    display: block;
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.blog-box h3 {
+    width: 90%;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.blog-box h3:hover {
+    color: blue;
+}
+
+.blog-box p {
+    color: #666;
+    width: 90%;
+    margin-top: -10px;
+}
+
+/* Media query para dispositivos móveis */
+@media (max-width: 768px) {
+    .blog-box {
+        width: 45%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-box {
+        width: 90%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}

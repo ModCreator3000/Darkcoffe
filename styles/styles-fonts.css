@@ -1,0 +1,153 @@
+/* Estilização do corpo de texto global, incluindo textos do databody e menu! */
+@charset "UTF-8";
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-weight: 300;
+}
+
+.text-container {
+    display: flex;
+    margin-right: 15%;
+    font-family: sans-serif;
+}
+
+/* Estilo para parágrafos */
+p {
+    opacity: 0.8;
+    font-size: 1rem;
+    line-height: 1.6; /* Melhor legibilidade */
+    margin: 1rem 0; /* Espaçamento consistente */
+    padding: 5%; /* Margem horizontal */
+    color: #333; /* Texto legível em fundo claro */
+    text-align: left; /* Alinhamento à esquerda */
+    margin-right: 20%;
+    margin-top: -5%;
+    margin-bottom: -5%;
+}
+
+/* Estilo para cabeçalhos */
+h1, h2, h3, h4, h5, h6 {
+    font-size: 2rem;
+    opacity: 1;
+    color: #222; /* Texto em negrito e escuro */
+    margin: 1.5rem 0 1rem; /* Espaçamento vertical */
+    padding: 0 5%; /* Consistência com o texto */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+h2, h3, h4, h5, h6 {
+    font-size: 1.8rem;
+    margin-right: 20%;
+}
+
+/* Listas ordenadas */
+ol {
+    list-style: decimal;
+    padding-left: 5%;
+    margin: 1rem 0;
+    line-height: 1.5;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Listas não ordenadas */
+ul {
+    list-style: disc;
+    padding-left: 5%;
+    margin: 1rem 0;
+    line-height: 1.5;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Listas de descrição */
+dl {
+    padding-left: 5%;
+    margin: 1rem 0;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+dt {
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+dd {
+    margin-left: 1.5rem; /* Ajustado para alinhamento à esquerda */
+    color: #555;
+}
+
+/* Estilo para blockquotes */
+blockquote {
+    font-size: 1rem;
+    line-height: 1.8;
+    font-style: italic;
+    color: #666;
+    border-left: 2.5px solid black; /* Borda no lado esquerdo */
+    width: 65%;
+    padding: 0rem 1.5rem;
+    margin: -40px 43px 40px;
+    background-color: #f9f9f9;
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+.author-link a {
+    color: blue;
+    text-decoration: none;
+    border: none !important;
+}
+
+.img-news {
+    padding: 5%;
+    width: 70%;
+    height: 360px;
+}
+/* Para celulares e tablets 
+*/
+
+  @media (max-width: 768px) {
+    body {
+        font-size: 0.9rem;
+    }
+
+    .text-container {
+        margin-right: 5%;
+        flex-direction: column;
+    }
+
+    p {
+        font-size: 1rem;
+        margin: 2%;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 1.5rem;
+        padding: 0 2%;
+        margin-right: 5%;
+        margin: 5%;
+        
+    }
+
+    h2, h3, h4, h5, h6 {
+        font-size: 1.4rem;
+    }
+
+    ol, ul, dl {
+        padding-left: 2%;
+        margin: 0.5rem 0;
+    }
+
+    blockquote {
+        font-size: 0.9rem;
+        width: 90%;
+        padding: 0.5rem 1rem;
+        margin: 2%;
+    }
+
+    .img-news {
+        padding: 2%;
+        width: 100%;
+        height: auto;
+    }
+}

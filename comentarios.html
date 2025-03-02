@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="margin: 0 4%; margin-top: 10%; border-top: 1px solid black;" class="comments-section">
+        <h2>Deixe o seu comentário</h2>
+        
+        <form id="nickForm">
+            <input id="nickText" rows="4" cols="10" maxlength="35" placeholder="UsuarioXXXXXXXXXX" required>
+            <br>
+        </form>
+        
+        <form id="commentForm">
+            <textarea id="commentText" rows="4" cols="80" maxlength="2000" placeholder="Escreva o seu comentário aqui..." required></textarea>
+            <br>
+            <button id="enviar" type="submit">Enviar</button>
+        </form>
+        
+    
+        </form>
+    
+        <div id="commentsDisplay">
+            <h3>Comentários</h3>
+            <ul id="commentsList"></ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+// Lista de caracteres proibidos
+const caracteresProibidos = ['/'];
+
+// Selecionar os campos de texto e a lista de comentários
+const nickText = document.getElementById('nickText');
+const commentText = document.getElementById('commentText');
+const commentsList = document.getElementById('commentsList');
+
+// Função para remover caracteres proibidos
+function removerCaracteresProibidos(texto) {
+    caracteresProibidos.forEach((caractere) => {
+        if (texto.includes(caractere)) {
+            texto = texto.replace(caractere, ''); // Remove o caractere proibido
+            alert(`O caractere "${caractere}" não é permitido.`);
+        }
+    });
+    return texto;
+}
+
+function gerarNomeAleatorio() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let nomeAleatorio = 'Usuário';
+    for (let i = 0; i < 6; i++) {
+        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return nomeAleatorio;
+}
+
+
+
+// Função para criar um novo comentário ou resposta
+function criarComentario(nomeA, texto, container, nomeB = null) {
+    const commentItem = document.createElement('div');
+    commentItem.classList.add('comment-item');
+
+    // Obter a data e hora atual no formato local
+    const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+
+    // Montar o texto do comentário
+    const referencia = nomeB ? `${nomeA} <small> <small style="color: inherit"> respondeu à </small> </small> ${nomeB}:` : `${nomeA}:`;
+    commentItem.innerHTML = `
+          <strong>${referencia} <small style="color: grey">${dataHora}</small> </strong> ${texto} <br>
+        <button id="bloqueado" class="reply-button">Responder</button>
+        <div class="reply-form" style="display: none;">
+            <textarea class="reply-text" placeholder="Digite sua resposta..."></textarea>
+            <button  class="submit-reply-button">Enviar Resposta</button>
+        </div>
+        <div class="reply-container"></div>
+    `;
+
+    // Elementos da interface
+
+   
+    const replyButton = commentItem.querySelector('.reply-button');
+    const replyForm = commentItem.querySelector('.reply-form');
+    const replyTextarea = replyForm.querySelector('.reply-text');
+    const submitReplyButton = replyForm.querySelector('.submit-reply-button');
+    const replyContainer = commentItem.querySelector('.reply-container');
+
+    // Mostrar/esconder formulário de resposta
+    replyButton.addEventListener('click', function () {
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+
+    
+    // Enviar uma resposta
+    submitReplyButton.addEventListener('click', function () {
+        const resposta = replyTextarea.value.trim();
+        const sanitizedResposta = removerCaracteresProibidos(resposta);
+
+        let nomeAtual = nickText.value.trim(); // Captura o nome atual do usuário
+        if(nomeAtual === ''){
+             nomeAtual = gerarNomeAleatorio();
+}
+        if (sanitizedResposta !== '') {
+            criarComentario(nomeAtual, sanitizedResposta, replyContainer, nomeA); // Responde a nomeA
+            replyForm.style.display = 'none'; // Esconde o formulário de resposta
+            replyTextarea.value = ''; // Limpa o campo de texto
+        } else {
+            alert('Por favor, escreva uma resposta válida.');
+        }
+    });
+
+    // Adicionar o comentário ao container fornecido
+    container.appendChild(commentItem);
+}
+
+// Adicionar evento ao formulário de comentário principal
+document.getElementById('commentForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Impede o envio do formulário
+
+    // Capturar o nome e o comentário
+    let nomeA = nickText.value.trim(); // Nome do autor do comentário principal
+    let comentario = commentText.value.trim();
+
+    // Remover caracteres proibidos
+    nomeA = removerCaracteresProibidos(nomeA);
+    comentario = removerCaracteresProibidos(comentario);
+
+
+   // Gerar nome aleatório se o campo de nome estiver vazio
+   if (nomeA === '') {
+        nomeA = gerarNomeAleatorio();
+        if (nomeA === '', comentario === '') {
+            alert("Está faltando o nome ou o comentário!")
+            return; // Retorna se o nome ainda estiver vazio
+        }
+    }
+        if (comentario.length > 1999){
+            alert("O seu comentário é muito longo! tente encurtar um pouco.")
+            return;
+        }
+    // Criar um novo comentário na lista principal
+    criarComentario(nomeA, comentario, commentsList);
+
+    // Limpar os campos após o envio
+    // Mantém o nome para o próximo uso
+    nickText.value = nomeA;
+    commentText.value = '';
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const remainingTime = localStorage.getItem('remainingTime');
+    const endTime = remainingTime ? parseInt(remainingTime) : null;
+    const currentTime = Date.now();
+
+    if (endTime && endTime > currentTime) {
+        startCountdown(Math.floor((endTime - currentTime) / 1000));
+    }
+
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Impede o envio do formulário
+        const countdownDuration = 60; // 60 segundos
+        const endTime = Date.now() + countdownDuration * 1000;
+        localStorage.setItem('remainingTime', endTime);
+        startCountdown(countdownDuration);
+    });
+
+    function startCountdown(initialTime) {
+        let i = initialTime;
+        document.getElementById("enviar").innerHTML = i + 's';
+        document.getElementById("commentText").style.display = 'none';
+
+        const intervalo = setInterval(function() {
+            i--;
+            document.getElementById("enviar").innerHTML = i + 's';
+
+            if (i <= 0) {
+                clearInterval(intervalo);
+                localStorage.removeItem('remainingTime');
+                alert('Você pode comentar novamente!');
+                document.getElementById("enviar").innerHTML = 'Enviar';
+                document.getElementById("commentText").style.display = 'block';
+            }
+        }, 1000); // 1000 milissegundos por segundo
+    }
+});
+</script>
+
